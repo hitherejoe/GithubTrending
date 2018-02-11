@@ -10,6 +10,8 @@ interface ProjectsRepository {
 
     fun bookmarkProject(projectId: String): Completable
 
+    fun unbookmarkProject(projectId: String): Completable
+
     fun getBookmarkedProjects(): Observable<List<Project>>
 
 }
