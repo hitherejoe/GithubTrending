@@ -19,6 +19,7 @@ ext {
     gsonVersion = '2.8.1'
     okHttpVersion = '3.8.1'
     retrofitVersion = '2.3.0'
+    roomVersion = '1.0.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -26,6 +27,8 @@ ext {
     mockitoKotlinVersion = '1.5.0'
     robolectricVersion = '3.4.2'
     mockitoVersion = '1.9.5'
+    androidSupportRunnerVersion = '1.0.0'
+    androidSupportRulesVersion = '1.0.0'
 
     domainDependencies = [
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
@@ -52,6 +55,31 @@ ext {
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
+    ]
+
+    cacheDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
+            gson:               "com.google.code.gson:gson:${gsonVersion}",
+            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
+            androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
+            roomRuntime:        "android.arch.persistence.room:runtime:${roomVersion}",
+            roomCompiler:       "android.arch.persistence.room:compiler:${roomVersion}",
+            roomRxJava:         "android.arch.persistence.room:rxjava2:${roomVersion}"
+    ]
+
+    cacheTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            roomTesting:        "android.arch.persistence.room:testing:${roomVersion}",
+            archTesting:        "android.arch.core:core-testing:${roomVersion}",
+            supportRunner:      "com.android.support.test:runner:${androidSupportRunnerVersion}",
+            supportRules:       "com.android.support.test:rules:${androidSupportRulesVersion}"
     ]
 
     remoteDependencies = [
