@@ -12,6 +12,6 @@ class GetProjects @Inject constructor(private val projectsRepository: ProjectsRe
     : SingleUseCase<List<Project>, Nothing>(postExecutionThread) {
 
     public override fun buildUseCaseSingle(params: Nothing?): Single<List<Project>> {
-        return projectsRepository.getProjects()
+        return Single.just(null)
     }
 }
