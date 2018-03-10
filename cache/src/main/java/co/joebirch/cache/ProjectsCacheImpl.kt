@@ -2,6 +2,7 @@ package co.joebirch.cache
 
 import co.joebirch.cache.db.ProjectsDatabase
 import co.joebirch.cache.mapper.CachedProjectMapper
+import co.joebirch.cache.model.Config
 import co.joebirch.data.model.ProjectEntity
 import co.joebirch.data.repository.ProjectsCache
 import io.reactivex.Completable
@@ -38,26 +39,40 @@ class ProjectsCacheImpl @Inject constructor(
     }
 
     override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Observable.defer {
+            Observable.just(projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
+                    .map { mapper.mapFromCached(it) })
+        }
     }
 
     override fun setProjectAsBookmarked(projectId: String): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.defer {
+            projectsDatabase.cachedProjectsDao().setBookmarkStatus(true, projectId)
+            Completable.complete()
+        }
     }
 
     override fun setProjectAsNotBookmarked(projectId: String): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.defer {
+            projectsDatabase.cachedProjectsDao().setBookmarkStatus(false, projectId)
+            Completable.complete()
+        }
     }
 
     override fun areProjectsCached(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return projectsDatabase.cachedProjectsDao().getProjects().isNotEmpty()
     }
 
     override fun setLastCacheTime(lastCache: Long): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.defer {
+            projectsDatabase.configDao().insertConfig(Config(lastCache))
+            Completable.complete()
+        }
     }
 
     override fun isProjectsCacheExpired(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val currentTime = System.currentTimeMillis()
+        val expirationTime = (60 * 10 * 1000).toLong()
+        return currentTime - projectsDatabase.configDao().getConfig().lastCacheTime > expirationTime
     }
 }
