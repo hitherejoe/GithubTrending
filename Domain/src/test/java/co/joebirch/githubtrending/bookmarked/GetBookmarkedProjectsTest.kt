@@ -48,7 +48,7 @@ class GetBookmarkedProjectsTest {
 
     private fun stubProjectsRepositoryGetBookmarkedProjects(single: Single<List<Project>>) {
         whenever(projectsRepository.getBookmarkedProjects())
-                .thenReturn(single)
+                .thenReturn(single.toObservable())
     }
 
 }

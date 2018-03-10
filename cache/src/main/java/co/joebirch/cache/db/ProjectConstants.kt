@@ -10,7 +10,7 @@ object ProjectConstants {
 
     const val QUERY_PROJECTS = "SELECT * FROM $TABLE_NAME"
 
-    const val DELETE_PROJECTS = "DELETE * FROM $TABLE_NAME"
+    const val DELETE_PROJECTS = "DELETE FROM $TABLE_NAME"
 
     const val QUERY_BOOKMARKED_PROJECTS = "SELECT * FROM $TABLE_NAME " +
             "WHERE $COLUMN_IS_BOOKMARKED = 1"

@@ -58,7 +58,7 @@ class GetProjectsTest {
 
     private fun stubProjectsRepositoryGetProjects(single: Single<List<Project>>) {
         whenever(projectsRepository.getProjects())
-                .thenReturn(single)
+                .thenReturn(single.toObservable())
     }
 
 }
