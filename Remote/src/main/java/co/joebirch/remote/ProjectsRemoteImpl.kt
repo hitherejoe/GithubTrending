@@ -7,7 +7,7 @@ import co.joebirch.remote.service.GithubTrendingService
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class ProjectsRemoteImpl @Inject constructor(
+open class ProjectsRemoteImpl @Inject constructor(
         private val service: GithubTrendingService,
         private val mapper: ProjectsResponseModelMapper)
     : ProjectsRemote {
