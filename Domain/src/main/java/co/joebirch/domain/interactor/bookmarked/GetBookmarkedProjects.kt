@@ -13,6 +13,6 @@ open class GetBookmarkedProjects @Inject constructor(
     : SingleUseCase<List<Project>, Nothing>(postExecutionThread) {
 
     public override fun buildUseCaseSingle(params: Nothing?): Single<List<Project>> {
-        return Single.just(null)
+        return projectsRepository.getBookmarkedProjects().singleOrError()
     }
 }

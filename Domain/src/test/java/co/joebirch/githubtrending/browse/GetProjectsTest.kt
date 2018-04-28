@@ -7,7 +7,7 @@ import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.githubtrending.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Single
+import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +31,7 @@ class GetProjectsTest {
     @Test
     fun getProjectsCompletes() {
         stubProjectsRepositoryGetProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
 
         val testObserver = getProjects.buildUseCaseSingle().test()
         testObserver.assertComplete()
@@ -40,7 +40,7 @@ class GetProjectsTest {
     @Test
     fun getProjectsCallsRepository() {
         stubProjectsRepositoryGetProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
 
         getProjects.buildUseCaseSingle().test()
         verify(projectsRepository).getProjects()
@@ -50,13 +50,13 @@ class GetProjectsTest {
     fun getProjectsReturnsData() {
         val projects = ProjectDataFactory.makeProjectList(2)
         stubProjectsRepositoryGetProjects(
-                Single.just(projects))
+                Observable.just(projects))
 
         val testObserver = getProjects.buildUseCaseSingle().test()
         testObserver.assertValue(projects)
     }
 
-    private fun stubProjectsRepositoryGetProjects(single: Single<List<Project>>) {
+    private fun stubProjectsRepositoryGetProjects(single: Observable<List<Project>>) {
         whenever(projectsRepository.getProjects())
                 .thenReturn(single)
     }
