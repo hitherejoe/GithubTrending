@@ -10,7 +10,7 @@ class ProjectViewMapper @Inject constructor(): ViewMapper<ProjectView, Project> 
         return Project(presentation.id, presentation.name,
                 presentation.fullName, presentation.starCount,
                 presentation.dateCreated, presentation.ownerName,
-                presentation.ownerAvatar)
+                presentation.ownerAvatar, presentation.isBookmarked)
     }
 
 }
