@@ -3,14 +3,15 @@ package co.joebirch.mobile_ui.injection.module
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import co.joebirch.mobile_ui.injection.ViewModelFactory
-import co.joebirch.mobile_ui.injection.ViewModelKey
 import co.joebirch.presentation.BrowseProjectsViewModel
 import dagger.Binds
+import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
+import kotlin.reflect.KClass
 
 @Module
-abstract class ViewModelModule {
+abstract class PresentationModule {
 
     @Binds
     @IntoMap
@@ -18,5 +19,11 @@ abstract class ViewModelModule {
     abstract fun bindBrowseProjectsViewModel(viewModel: BrowseProjectsViewModel): ViewModel
 
     @Binds
-    abstract fun bindsViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
+
+@MustBeDocumented
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class ViewModelKey(val value: KClass<out ViewModel>)

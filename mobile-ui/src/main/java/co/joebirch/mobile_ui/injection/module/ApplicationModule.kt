@@ -1,9 +1,13 @@
 package co.joebirch.mobile_ui.injection.module
 
+import android.app.Application
+import android.content.Context
+import dagger.Binds
 import dagger.Module
 
-@Module(includes = arrayOf(ViewModelModule::class,
-        BrowseActivityModule::class))
-class ApplicationModule {
+@Module
+abstract class ApplicationModule {
 
+    @Binds
+    abstract fun bindContext(application: Application): Context
 }

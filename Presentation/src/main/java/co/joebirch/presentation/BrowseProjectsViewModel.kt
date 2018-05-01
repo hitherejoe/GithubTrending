@@ -23,6 +23,10 @@ class BrowseProjectsViewModel @Inject constructor(
 
     private val liveData: MutableLiveData<Resource<List<ProjectView>>> = MutableLiveData()
 
+    init {
+        fetchProjects()
+    }
+
     override fun onCleared() {
         getProjects.dispose()
         super.onCleared()

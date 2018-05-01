@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Mobile-UI</string>
+    <string name="app_name">Github Trending</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>

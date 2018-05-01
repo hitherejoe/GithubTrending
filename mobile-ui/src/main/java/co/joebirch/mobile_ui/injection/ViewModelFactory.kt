@@ -7,7 +7,7 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
-class ViewModelFactory : ViewModelProvider.Factory {
+open class ViewModelFactory : ViewModelProvider.Factory {
 
     private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>
 
@@ -27,7 +27,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
             }
         }
         if (creator == null) {
-            throw IllegalStateException("unknown model class")
+            throw IllegalStateException("Unknown model class: " + modelClass)
         }
         try {
             return creator.get() as T
@@ -35,4 +35,5 @@ class ViewModelFactory : ViewModelProvider.Factory {
             throw RuntimeException(e)
         }
     }
+
 }

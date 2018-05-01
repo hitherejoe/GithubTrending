@@ -32,10 +32,11 @@ class ProjectsCacheImpl @Inject constructor(
     }
 
     override fun getProjects(): Observable<List<ProjectEntity>> {
-        return Observable.defer {
-            Observable.just(projectsDatabase.cachedProjectsDao().getProjects()
-                    .map { mapper.mapFromCached(it) })
-        }
+        return projectsDatabase.cachedProjectsDao().getProjects()
+                .map {
+                    it.map { mapper.mapFromCached(it) }
+                }
+                .toObservable()
     }
 
     override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
@@ -60,7 +61,7 @@ class ProjectsCacheImpl @Inject constructor(
     }
 
     override fun areProjectsCached(): Boolean {
-        return projectsDatabase.cachedProjectsDao().getProjects().isNotEmpty()
+        return true
     }
 
     override fun setLastCacheTime(lastCache: Long): Completable {
