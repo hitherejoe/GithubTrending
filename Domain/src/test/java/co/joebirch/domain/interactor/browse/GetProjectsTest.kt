@@ -28,7 +28,7 @@ class GetProjectsTest {
     fun getProjectsCompletes() {
         stubProjectsRepositoryGetProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
-        val testObserver = getProjects.buildUseCaseSingle().test()
+        val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
@@ -36,7 +36,7 @@ class GetProjectsTest {
     fun getProjectsCallsRepository() {
         stubProjectsRepositoryGetProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
-        getProjects.buildUseCaseSingle().test()
+        getProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getProjects()
     }
 
@@ -45,7 +45,7 @@ class GetProjectsTest {
         val projects = ProjectDataFactory.makeProjectList(2)
         stubProjectsRepositoryGetProjects(
                 Observable.just(projects))
-        val testObserver = getProjects.buildUseCaseSingle().test()
+        val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertValue(projects)
     }
 
