@@ -2,6 +2,7 @@ package co.joebirch.data
 
 import co.joebirch.data.mapper.ProjectMapper
 import co.joebirch.data.model.ProjectEntity
+import co.joebirch.data.repository.ProjectsCache
 import co.joebirch.data.repository.ProjectsDataStore
 import co.joebirch.data.store.ProjectsDataStoreFactory
 import co.joebirch.data.test.factory.DataFactory
@@ -13,6 +14,7 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +26,8 @@ class ProjectsDataRepositoryTest {
     private val mapper = mock<ProjectMapper>()
     private val factory = mock<ProjectsDataStoreFactory>()
     private val store = mock<ProjectsDataStore>()
-    private val repository = ProjectsDataRepository(mapper, factory)
+    private val cache = mock<ProjectsCache>()
+    private val repository = ProjectsDataRepository(mapper, cache, factory)
 
     @Before
     fun setup() {
@@ -130,8 +133,18 @@ class ProjectsDataRepositoryTest {
         testObserver.assertValue(data)
     }
 
+    private fun stubProjectsCacheAreProjectsCached(single: Single<Boolean>) {
+        whenever(cache.areProjectsCached())
+                .thenReturn(single)
+    }
+
+    private fun stubProjectsCacheIsProjectsCacheExpired(single: Single<Boolean>) {
+        whenever(cache.isProjectsCacheExpired())
+                .thenReturn(single)
+    }
+
     private fun stubProjectsDataStoreFactoryGetDataStore() {
-        whenever(factory.getDataStore())
+        whenever(factory.getDataStore(any(), any()))
                 .thenReturn(store)
     }
 
