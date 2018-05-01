@@ -3,6 +3,7 @@ package co.joebirch.data.store
 import co.joebirch.data.repository.ProjectsCache
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.Single
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -28,12 +29,12 @@ class ProjectsDataStoreFactoryTest {
 
     @Test
     fun getDataStoreReturnsRemoteSourceWhenNoCachedData() {
-        assert(factory.getDataStore() is ProjectsRemoteDataStore)
+        assert(factory.getDataStore(false, false) is ProjectsRemoteDataStore)
     }
 
     @Test
     fun getDataStoreReturnsRemoteSourceWhenCacheExpired() {
-        assert(factory.getDataStore() is ProjectsRemoteDataStore)
+        assert(factory.getDataStore(false, false) is ProjectsRemoteDataStore)
     }
 
     @Test
@@ -41,17 +42,17 @@ class ProjectsDataStoreFactoryTest {
         stubProjectsCacheAreProjectsCached(true)
         stubProjectsCacheIsProjectsCachedExpired(false)
 
-        assert(factory.getDataStore() is ProjectsCacheDataStore)
+        assert(factory.getDataStore(true, false) is ProjectsCacheDataStore)
     }
 
     private fun stubProjectsCacheAreProjectsCached(areCached: Boolean) {
         whenever(cache.areProjectsCached())
-                .thenReturn(areCached)
+                .thenReturn(Single.just(areCached))
     }
 
     private fun stubProjectsCacheIsProjectsCachedExpired(expired: Boolean) {
         whenever(cache.isProjectsCacheExpired())
-                .thenReturn(expired)
+                .thenReturn(Single.just(expired))
     }
 
 }
