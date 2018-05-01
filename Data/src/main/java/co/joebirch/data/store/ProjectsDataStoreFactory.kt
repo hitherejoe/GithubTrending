@@ -9,9 +9,9 @@ class ProjectsDataStoreFactory @Inject constructor(
         private val projectsCacheDataStore: ProjectsCacheDataStore,
         private val projectsRemoteDataStore: ProjectsRemoteDataStore) {
 
-    fun getDataStore(): ProjectsDataStore {
-        return if (projectsCache.areProjectsCached() &&
-                       !projectsCache.isProjectsCacheExpired()) {
+    fun getDataStore(projectsCached: Boolean,
+                     cacheExpired: Boolean): ProjectsDataStore {
+        return if (projectsCached && !cacheExpired) {
             projectsCacheDataStore
         } else {
             projectsRemoteDataStore

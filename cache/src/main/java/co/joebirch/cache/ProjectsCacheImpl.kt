@@ -7,6 +7,7 @@ import co.joebirch.data.model.ProjectEntity
 import co.joebirch.data.repository.ProjectsCache
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 class ProjectsCacheImpl @Inject constructor(
@@ -23,26 +24,26 @@ class ProjectsCacheImpl @Inject constructor(
 
     override fun saveProjects(projects: List<ProjectEntity>): Completable {
         return Completable.defer {
-            projects.forEach {
-                projectsDatabase.cachedProjectsDao().insertProject(
-                        mapper.mapToCached(it))
-            }
+            projectsDatabase.cachedProjectsDao().insertProjects(
+                    projects.map { mapper.mapToCached(it) })
             Completable.complete()
         }
     }
 
     override fun getProjects(): Observable<List<ProjectEntity>> {
-        return Observable.defer {
-            Observable.just(projectsDatabase.cachedProjectsDao().getProjects()
-                    .map { mapper.mapFromCached(it) })
-        }
+        return projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
+                .toObservable()
+                .map {
+                    it.map { mapper.mapFromCached(it) }
+                }
     }
 
     override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
-        return Observable.defer {
-            Observable.just(projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
-                    .map { mapper.mapFromCached(it) })
-        }
+        return projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
+                .toObservable()
+                .map {
+                    it.map { mapper.mapFromCached(it) }
+                }
     }
 
     override fun setProjectAsBookmarked(projectId: String): Completable {
@@ -59,8 +60,11 @@ class ProjectsCacheImpl @Inject constructor(
         }
     }
 
-    override fun areProjectsCached(): Boolean {
-        return projectsDatabase.cachedProjectsDao().getProjects().isNotEmpty()
+    override fun areProjectsCached(): Single<Boolean> {
+        return projectsDatabase.cachedProjectsDao().getProjects().isEmpty
+                .map {
+                    !it
+                }
     }
 
     override fun setLastCacheTime(lastCache: Long): Completable {
@@ -70,9 +74,14 @@ class ProjectsCacheImpl @Inject constructor(
         }
     }
 
-    override fun isProjectsCacheExpired(): Boolean {
+    override fun isProjectsCacheExpired(): Single<Boolean> {
         val currentTime = System.currentTimeMillis()
         val expirationTime = (60 * 10 * 1000).toLong()
-        return currentTime - projectsDatabase.configDao().getConfig().lastCacheTime > expirationTime
+        return projectsDatabase.configDao().getConfig()
+                .single(Config(lastCacheTime = 0))
+                .map {
+                    currentTime - it.lastCacheTime > expirationTime
+                }
     }
+
 }
