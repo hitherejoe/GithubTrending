@@ -1,21 +1,17 @@
-package co.joebirch.githubtrending.browse
+package co.joebirch.domain.interactor.browse
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.browse.GetProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
-import co.joebirch.githubtrending.test.ProjectDataFactory
+import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class GetProjectsTest {
 
     private lateinit var getProjects: GetProjects
@@ -32,7 +28,6 @@ class GetProjectsTest {
     fun getProjectsCompletes() {
         stubProjectsRepositoryGetProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
-
         val testObserver = getProjects.buildUseCaseSingle().test()
         testObserver.assertComplete()
     }
@@ -41,7 +36,6 @@ class GetProjectsTest {
     fun getProjectsCallsRepository() {
         stubProjectsRepositoryGetProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
-
         getProjects.buildUseCaseSingle().test()
         verify(projectsRepository).getProjects()
     }
@@ -51,14 +45,13 @@ class GetProjectsTest {
         val projects = ProjectDataFactory.makeProjectList(2)
         stubProjectsRepositoryGetProjects(
                 Observable.just(projects))
-
         val testObserver = getProjects.buildUseCaseSingle().test()
         testObserver.assertValue(projects)
     }
 
     private fun stubProjectsRepositoryGetProjects(single: Observable<List<Project>>) {
         whenever(projectsRepository.getProjects())
-                .thenReturn(single.toObservable())
+                .thenReturn(single)
     }
 
 }

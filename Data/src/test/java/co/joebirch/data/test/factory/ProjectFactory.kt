@@ -9,7 +9,8 @@ object ProjectFactory {
         return ProjectEntity(DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
-                DataFactory.randomString(), DataFactory.randomString())
+                DataFactory.randomString(), DataFactory.randomString(),
+                DataFactory.randomBoolean())
     }
 
     fun makeProject(): Project {

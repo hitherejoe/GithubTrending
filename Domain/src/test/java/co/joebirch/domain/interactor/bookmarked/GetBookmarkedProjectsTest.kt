@@ -1,13 +1,14 @@
-package co.joebirch.githubtrending.bookmarked
+package co.joebirch.domain.interactor.bookmarked
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.bookmarked.GetBookmarkedProjects
+import co.joebirch.domain.interactor.bookmark.GetBookmarkedProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
-import co.joebirch.githubtrending.test.ProjectDataFactory
+import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +34,7 @@ class GetBookmarkedProjectsTest {
         stubProjectsRepositoryGetBookmarkedProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
 
-        val testObserver = getBookmarkedProjects.buildUseCaseSingle().test()
+        val testObserver = getBookmarkedProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
@@ -42,13 +43,13 @@ class GetBookmarkedProjectsTest {
         stubProjectsRepositoryGetBookmarkedProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
 
-        getBookmarkedProjects.buildUseCaseSingle().test()
+        getBookmarkedProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getBookmarkedProjects()
     }
 
     private fun stubProjectsRepositoryGetBookmarkedProjects(single: Observable<List<Project>>) {
         whenever(projectsRepository.getBookmarkedProjects())
-                .thenReturn(single.toObservable())
+                .thenReturn(single)
     }
 
 }
