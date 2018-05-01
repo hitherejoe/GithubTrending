@@ -9,14 +9,16 @@ object ProjectFactory {
         return ProjectEntity(DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
-                DataFactory.randomString(), DataFactory.randomString())
+                DataFactory.randomString(), DataFactory.randomString(),
+                DataFactory.randomBoolean())
     }
 
     fun makeProject(): Project {
         return Project(DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
-                DataFactory.randomString(), DataFactory.randomString())
+                DataFactory.randomString(), DataFactory.randomString(),
+                DataFactory.randomBoolean())
     }
 
 }
