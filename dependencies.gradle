@@ -5,7 +5,7 @@ ext {
     androidMinSdkVersion = 21
     androidTargetSdkVersion = 26
     androidCompileSdkVersion = 26
-    kotlinVersion = '1.1.4-3'
+    kotlinVersion = '1.2.10'
 
     //Libraries
     supportLibraryVersion = '26.1.0'
