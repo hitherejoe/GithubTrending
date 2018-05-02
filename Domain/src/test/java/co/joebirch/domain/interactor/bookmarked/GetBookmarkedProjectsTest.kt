@@ -8,7 +8,6 @@ import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
-import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +31,7 @@ class GetBookmarkedProjectsTest {
     @Test
     fun getBookmarkedProjectsCompletes() {
         stubProjectsRepositoryGetBookmarkedProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
 
         val testObserver = getBookmarkedProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
@@ -41,7 +40,7 @@ class GetBookmarkedProjectsTest {
     @Test
     fun getBookmarkProjectsCallsRepository() {
         stubProjectsRepositoryGetBookmarkedProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
 
         getBookmarkedProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getBookmarkedProjects()
@@ -49,7 +48,7 @@ class GetBookmarkedProjectsTest {
 
     private fun stubProjectsRepositoryGetBookmarkedProjects(single: Observable<List<Project>>) {
         whenever(projectsRepository.getBookmarkedProjects())
-                .thenReturn(single.toObservable())
+                .thenReturn(single)
     }
 
 }

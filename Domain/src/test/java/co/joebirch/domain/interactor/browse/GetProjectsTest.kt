@@ -1,6 +1,7 @@
 package co.joebirch.domain.interactor.browse
 
 import co.joebirch.domain.executor.PostExecutionThread
+import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
@@ -27,7 +28,7 @@ class GetProjectsTest {
     fun getProjectsCompletes() {
         stubProjectsRepositoryGetProjects(Single.just(
                 ProjectDataFactory.makeProjectList(2)))
-        val testObserver = getProjects.buildUseCaseSingle().test()
+        val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
@@ -35,7 +36,7 @@ class GetProjectsTest {
     fun getProjectsCallsRepository() {
         stubProjectsRepositoryGetProjects(Single.just(
                 ProjectDataFactory.makeProjectList(2)))
-        getProjects.buildUseCaseSingle().test()
+        getProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getProjects()
     }
 
@@ -43,7 +44,7 @@ class GetProjectsTest {
     fun getProjectsReturnsData() {
         val projects = ProjectDataFactory.makeProjectList(2)
         stubProjectsRepositoryGetProjects(Single.just(projects))
-        val testObserver = getProjects.buildUseCaseSingle().test()
+        val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertValue(projects)
     }
 

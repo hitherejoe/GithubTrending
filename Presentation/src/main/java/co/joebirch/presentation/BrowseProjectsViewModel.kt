@@ -3,7 +3,7 @@ package co.joebirch.presentation
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import co.joebirch.domain.interactor.browse.BookmarkProject
+import co.joebirch.domain.interactor.bookmark.BookmarkProject
 import co.joebirch.domain.interactor.browse.GetProjects
 import co.joebirch.domain.interactor.browse.UnBookmarkProject
 import co.joebirch.domain.model.Project

@@ -1,5 +1,7 @@
 package co.joebirch.domain.test
 
+import co.joebirch.domain.model.Project
+
 object ProjectDataFactory {
 
     fun randomUuid(): String {
@@ -8,7 +10,7 @@ object ProjectDataFactory {
 
     fun makeProject(): Project {
         return Project(randomUuid(), randomUuid(), randomUuid(), randomUuid(),
-                randomUuid(), randomUuid(), randomUuid())
+                randomUuid(), randomUuid(), randomUuid(), false)
     }
 
     fun makeProjectList(count: Int) : List<Project> {
