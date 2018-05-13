@@ -8,7 +8,7 @@ class ProjectsResponseModelMapper @Inject constructor(): ModelMapper<ProjectMode
 
     override fun mapFromModel(model: ProjectModel): ProjectEntity {
         return ProjectEntity(model.id, model.name, model.fullName, model.starCount.toString(),
-                model.dateCreated, model.owner.ownerName, model.owner.ownerAvatar, true)
+                model.dateCreated, model.owner.ownerName, model.owner.ownerAvatar, false)
     }
 
 }

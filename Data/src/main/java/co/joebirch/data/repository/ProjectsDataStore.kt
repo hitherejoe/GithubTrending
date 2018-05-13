@@ -2,11 +2,12 @@ package co.joebirch.data.repository
 
 import co.joebirch.data.model.ProjectEntity
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 
 interface ProjectsDataStore {
 
-    fun getProjects(): Observable<List<ProjectEntity>>
+    fun getProjects(): Flowable<List<ProjectEntity>>
 
     fun saveProjects(projects: List<ProjectEntity>): Completable
 

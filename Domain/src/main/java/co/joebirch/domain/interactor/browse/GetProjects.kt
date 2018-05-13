@@ -1,18 +1,18 @@
 package co.joebirch.domain.interactor.browse
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.ObservableUseCase
+import co.joebirch.domain.interactor.FlowableUseCase
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class GetProjects @Inject constructor(
         private val projectsRepository: ProjectsRepository,
         postExecutionThread: PostExecutionThread)
-    : ObservableUseCase<List<Project>, Nothing>(postExecutionThread) {
+    : FlowableUseCase<List<Project>, Nothing>(postExecutionThread) {
 
-    public override fun buildUseCaseObservable(params: Nothing?): Observable<List<Project>> {
+    public override fun buildUseCaseObservable(params: Nothing?): Flowable<List<Project>> {
         return projectsRepository.getProjects()
     }
 

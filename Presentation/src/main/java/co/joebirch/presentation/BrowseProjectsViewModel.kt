@@ -3,7 +3,7 @@ package co.joebirch.presentation
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import co.joebirch.domain.interactor.browse.BookmarkProject
+import co.joebirch.domain.interactor.bookmark.BookmarkProject
 import co.joebirch.domain.interactor.browse.GetProjects
 import co.joebirch.domain.interactor.browse.UnBookmarkProject
 import co.joebirch.domain.model.Project
@@ -12,7 +12,7 @@ import co.joebirch.presentation.model.ProjectView
 import co.joebirch.presentation.state.Resource
 import co.joebirch.presentation.state.ResourceState
 import io.reactivex.observers.DisposableCompletableObserver
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.subscribers.DisposableSubscriber
 import javax.inject.Inject
 
 class BrowseProjectsViewModel @Inject constructor(
@@ -53,7 +53,7 @@ class BrowseProjectsViewModel @Inject constructor(
                 UnBookmarkProject.Params.forProject(projectId))
     }
 
-    inner class ProjectsSubscriber: DisposableObserver<List<Project>>() {
+    inner class ProjectsSubscriber: DisposableSubscriber<List<Project>>() {
         override fun onNext(t: List<Project>) {
             liveData.postValue(Resource(ResourceState.SUCCESS,
                     t.map { mapper.mapToView(it) }, null))

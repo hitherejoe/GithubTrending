@@ -1,7 +1,7 @@
 package co.joebirch.remote.service
 
 import co.joebirch.remote.model.ProjectsResponseModel
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,6 +11,6 @@ interface GithubTrendingService {
     fun searchRepositories(@Query("q") query: String,
                            @Query("sort") sortBy: String,
                            @Query("order") order: String)
-    : Observable<ProjectsResponseModel>
+    : Flowable<ProjectsResponseModel>
 
 }

@@ -6,6 +6,7 @@ import co.joebirch.cache.model.Config
 import co.joebirch.data.model.ProjectEntity
 import co.joebirch.data.repository.ProjectsCache
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -30,12 +31,11 @@ class ProjectsCacheImpl @Inject constructor(
         }
     }
 
-    override fun getProjects(): Observable<List<ProjectEntity>> {
+    override fun getProjects(): Flowable<List<ProjectEntity>> {
         return projectsDatabase.cachedProjectsDao().getProjects()
                 .map {
                     it.map { mapper.mapFromCached(it) }
                 }
-                .toObservable()
     }
 
     override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
@@ -78,7 +78,7 @@ class ProjectsCacheImpl @Inject constructor(
         val currentTime = System.currentTimeMillis()
         val expirationTime = (60 * 10 * 1000).toLong()
         return projectsDatabase.configDao().getConfig()
-                .single(Config(lastCacheTime = 0))
+                .onErrorReturn { Config(lastCacheTime = 0) }
                 .map {
                     currentTime - it.lastCacheTime > expirationTime
                 }

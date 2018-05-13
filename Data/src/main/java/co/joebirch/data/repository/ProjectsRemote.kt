@@ -1,10 +1,10 @@
 package co.joebirch.data.repository
 
 import co.joebirch.data.model.ProjectEntity
-import io.reactivex.Observable
+import io.reactivex.Flowable
 
 interface ProjectsRemote {
 
-    fun getProjects(): Observable<List<ProjectEntity>>
+    fun getProjects(): Flowable<List<ProjectEntity>>
 
 }

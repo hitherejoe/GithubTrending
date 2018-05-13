@@ -1,19 +1,18 @@
-package co.joebirch.mobile_ui.browse
+package co.joebirch.mobile_ui.bookmarked
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import co.joebirch.mobile_ui.R
-import co.joebirch.mobile_ui.bookmarked.BookmarkedActivity
 import co.joebirch.mobile_ui.injection.ViewModelFactory
 import co.joebirch.mobile_ui.mapper.ProjectViewMapper
 import co.joebirch.mobile_ui.model.Project
-import co.joebirch.presentation.BrowseProjectsViewModel
+import co.joebirch.presentation.BrowseBookmarkedProjectsViewModel
 import co.joebirch.presentation.model.ProjectView
 import co.joebirch.presentation.state.Resource
 import co.joebirch.presentation.state.ResourceState
@@ -21,16 +20,18 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_browse.*
 import javax.inject.Inject
 
+class BookmarkedActivity: AppCompatActivity() {
 
-class BrowseActivity : AppCompatActivity() {
+    @Inject lateinit var browseAdapter: BookmarkedAdapter
+    @Inject lateinit var mapper: ProjectViewMapper
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var browseViewModel: BrowseBookmarkedProjectsViewModel
 
-    @Inject
-    lateinit var browseAdapter: BrowseAdapter
-    @Inject
-    lateinit var mapper: ProjectViewMapper
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var browseViewModel: BrowseProjectsViewModel
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, BookmarkedActivity::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +39,11 @@ class BrowseActivity : AppCompatActivity() {
         AndroidInjection.inject(this)
 
         browseViewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(BrowseProjectsViewModel::class.java)
+                .get(BrowseBookmarkedProjectsViewModel::class.java)
 
         setupBrowseRecycler()
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)//Menu Resource, Menu
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_bookmarked -> {
-                startActivity(BookmarkedActivity.getStartIntent(this))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStart() {
@@ -70,7 +58,6 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     private fun setupBrowseRecycler() {
-        browseAdapter.projectListener = projectListener
         recycler_projects.layoutManager = LinearLayoutManager(this)
         recycler_projects.adapter = browseAdapter
     }
@@ -99,15 +86,4 @@ class BrowseActivity : AppCompatActivity() {
 
         }
     }
-
-    private val projectListener = object : ProjectListener {
-        override fun onBookmarkedProjectClicked(projectId: String) {
-            browseViewModel.unbookmarkProject(projectId)
-        }
-
-        override fun onProjectClicked(projectId: String) {
-            browseViewModel.bookmarkProject(projectId)
-        }
-    }
-
 }
