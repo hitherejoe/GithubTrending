@@ -21,15 +21,11 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_browse.*
 import javax.inject.Inject
 
-
 class BrowseActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var browseAdapter: BrowseAdapter
-    @Inject
-    lateinit var mapper: ProjectViewMapper
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var browseAdapter: BrowseAdapter
+    @Inject lateinit var mapper: ProjectViewMapper
+    @Inject lateinit var viewModelFactory: ViewModelFactory
     private lateinit var browseViewModel: BrowseProjectsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +39,19 @@ class BrowseActivity : AppCompatActivity() {
         setupBrowseRecycler()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)//Menu Resource, Menu
+    override fun onStart() {
+        super.onStart()
+        browseViewModel.getProjects().observe(this,
+                Observer<Resource<List<ProjectView>>> {
+                    it?.let {
+                        handleDataState(it)
+                    }
+                })
+        browseViewModel.fetchProjects()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
@@ -56,17 +63,6 @@ class BrowseActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        browseViewModel.getProjects().observe(this,
-                Observer<Resource<List<ProjectView>>> {
-                    it?.let {
-                        handleDataState(it)
-                    }
-                })
-        browseViewModel.fetchProjects()
     }
 
     private fun setupBrowseRecycler() {

@@ -27,8 +27,7 @@
 
         <activity
             android:name=".bookmarked.BookmarkedActivity"
-            android:icon="@mipmap/ic_launcher"
-            android:label="Bookmarked" />
+            android:label="@string/title_bookmarked" />
 
     </application>
 

@@ -25,6 +25,7 @@ abstract class PresentationModule {
     abstract fun bindBrowseBookmarkedProjectsViewModel(
             viewModel: BrowseBookmarkedProjectsViewModel): ViewModel
 
+
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
