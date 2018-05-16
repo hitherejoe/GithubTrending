@@ -8,6 +8,10 @@ import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
+<<<<<<< HEAD
+=======
+import io.reactivex.Single
+>>>>>>> task/cache
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

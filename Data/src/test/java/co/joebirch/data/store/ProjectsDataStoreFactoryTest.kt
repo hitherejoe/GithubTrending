@@ -14,8 +14,7 @@ class ProjectsDataStoreFactoryTest {
     private val cache = mock<ProjectsCache>()
     private val cacheStore = mock<ProjectsCacheDataStore>()
     private val remoteStore = mock<ProjectsRemoteDataStore>()
-    private val factory = ProjectsDataStoreFactory(cache,
-            cacheStore, remoteStore)
+    private val factory = ProjectsDataStoreFactory(cacheStore, remoteStore)
 
     @Test
     fun getRemoteStoreRetrievesRemoteSource() {
