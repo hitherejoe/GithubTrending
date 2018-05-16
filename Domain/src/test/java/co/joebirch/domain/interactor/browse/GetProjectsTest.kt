@@ -6,7 +6,7 @@ import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.domain.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Single
+import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -26,16 +26,18 @@ class GetProjectsTest {
 
     @Test
     fun getProjectsCompletes() {
-        stubProjectsRepositoryGetProjects(Single.just(
-                ProjectDataFactory.makeProjectList(2)))
+        stubProjectsRepositoryGetProjects(
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
+
         val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
     @Test
     fun getProjectsCallsRepository() {
-        stubProjectsRepositoryGetProjects(Single.just(
-                ProjectDataFactory.makeProjectList(2)))
+        stubProjectsRepositoryGetProjects(
+                Observable.just(ProjectDataFactory.makeProjectList(2)))
+
         getProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getProjects()
     }
@@ -43,14 +45,15 @@ class GetProjectsTest {
     @Test
     fun getProjectsReturnsData() {
         val projects = ProjectDataFactory.makeProjectList(2)
-        stubProjectsRepositoryGetProjects(Single.just(projects))
+        stubProjectsRepositoryGetProjects(Observable.just(projects))
+
         val testObserver = getProjects.buildUseCaseObservable().test()
         testObserver.assertValue(projects)
     }
 
-    private fun stubProjectsRepositoryGetProjects(single: Single<List<Project>>) {
+    private fun stubProjectsRepositoryGetProjects(observable: Observable<List<Project>>) {
         whenever(projectsRepository.getProjects())
-                .thenReturn(single.toObservable())
+                .thenReturn(observable)
     }
 
 }
