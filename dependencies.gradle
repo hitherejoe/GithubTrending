@@ -74,6 +74,7 @@ ext {
     cacheTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             roomTesting:        "android.arch.persistence.room:testing:${roomVersion}",

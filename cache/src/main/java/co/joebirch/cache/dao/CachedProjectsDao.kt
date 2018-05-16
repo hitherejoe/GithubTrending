@@ -15,9 +15,11 @@ import io.reactivex.Flowable
 abstract class CachedProjectsDao {
 
     @Query(QUERY_PROJECTS)
+    @JvmSuppressWildcards
     abstract fun getProjects(): Flowable<List<CachedProject>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @JvmSuppressWildcards
     abstract fun insertProjects(projects: List<CachedProject>)
 
     @Query(DELETE_PROJECTS)

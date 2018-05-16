@@ -35,12 +35,14 @@ dependencies {
     implementation cacheDependencies.javaxInject
     implementation cacheDependencies.rxKotlin
     implementation cacheDependencies.roomRuntime
+    implementation cacheDependencies.roomRxJava
     kapt cacheDependencies.roomCompiler
 
     testImplementation cacheTestDependencies.junit
     testImplementation cacheTestDependencies.kotlinJUnit
     testImplementation cacheTestDependencies.mockito
     testImplementation cacheTestDependencies.assertj
+    testImplementation cacheTestDependencies.robolectric
     testImplementation cacheTestDependencies.archTesting
     testImplementation cacheTestDependencies.roomTesting
     androidTestImplementation 'com.android.support:support-annotations:27.1.0'
