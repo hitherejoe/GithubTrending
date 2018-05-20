@@ -29,4 +29,11 @@ object ProjectDataFactory {
                 DataFactory.randomBoolean())
     }
 
+    fun makeBookmarkedProjectEntity(): ProjectEntity {
+        return ProjectEntity(DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                true)
+    }
 }
