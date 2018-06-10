@@ -39,6 +39,7 @@ class BookmarkedActivity: AppCompatActivity() {
 
         browseViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(BrowseBookmarkedProjectsViewModel::class.java)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setupBrowseRecycler()
     }
 
@@ -55,13 +56,18 @@ class BookmarkedActivity: AppCompatActivity() {
 
     private fun setupBrowseRecycler() {
         recycler_projects.layoutManager = LinearLayoutManager(this)
+        recycler_projects.adapter = adapter
     }
 
     private fun handleDataState(resource: Resource<List<ProjectView>>) {
         when (resource.status) {
             ResourceState.SUCCESS -> {
-                progress.visibility = View.VISIBLE
-                recycler_projects.visibility = View.GONE
+                progress.visibility = View.GONE
+                recycler_projects.visibility = View.VISIBLE
+                resource.data?.let {
+                    adapter.projects = it.map { mapper.mapToView(it) }
+                    adapter.notifyDataSetChanged()
+                }
             }
             ResourceState.LOADING -> {
                 progress.visibility = View.VISIBLE

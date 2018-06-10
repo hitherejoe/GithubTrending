@@ -25,7 +25,7 @@ open class ProjectsCacheDataStore @Inject constructor(
         return projectsCache.clearProjects()
     }
 
-    override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
+    override fun getBookmarkedProjects(): Flowable<List<ProjectEntity>> {
         return projectsCache.getBookmarkedProjects()
     }
 

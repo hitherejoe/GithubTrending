@@ -7,7 +7,6 @@ import co.joebirch.data.model.ProjectEntity
 import co.joebirch.data.repository.ProjectsCache
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -38,9 +37,8 @@ class ProjectsCacheImpl @Inject constructor(
                 }
     }
 
-    override fun getBookmarkedProjects(): Observable<List<ProjectEntity>> {
+    override fun getBookmarkedProjects(): Flowable<List<ProjectEntity>> {
         return projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
-                .toObservable()
                 .map {
                     it.map { mapper.mapFromCached(it) }
                 }

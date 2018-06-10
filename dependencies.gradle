@@ -34,7 +34,7 @@ ext {
     espressoVersion = '3.0.0'
     robolectricVersion = '3.4.2'
     mockitoVersion = '1.9.5'
-    mockitoAndroidVersion = '2.8.47'
+    mockitoAndroidVersion = '2.8.9'
     androidSupportRunnerVersion = '1.0.0'
     androidSupportRulesVersion = '1.0.0'
     dexmakerMockitoversion = '2.2.0'

@@ -12,7 +12,7 @@ import co.joebirch.presentation.model.ProjectView
 import co.joebirch.presentation.state.Resource
 import co.joebirch.presentation.state.ResourceState
 import io.reactivex.observers.DisposableCompletableObserver
-import io.reactivex.subscribers.DisposableSubscriber
+import io.reactivex.observers.DisposableObserver
 import javax.inject.Inject
 
 class BrowseProjectsViewModel @Inject constructor(
@@ -53,7 +53,7 @@ class BrowseProjectsViewModel @Inject constructor(
                 UnBookmarkProject.Params.forProject(projectId))
     }
 
-    inner class ProjectsSubscriber: DisposableSubscriber<List<Project>>() {
+    inner class ProjectsSubscriber: DisposableObserver<List<Project>>() {
         override fun onNext(t: List<Project>) {
             liveData.postValue(Resource(ResourceState.SUCCESS,
                     t.map { mapper.mapToView(it) }, null))

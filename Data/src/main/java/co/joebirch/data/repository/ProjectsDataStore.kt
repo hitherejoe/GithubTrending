@@ -3,7 +3,6 @@ package co.joebirch.data.repository
 import co.joebirch.data.model.ProjectEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 
 interface ProjectsDataStore {
 
@@ -13,7 +12,7 @@ interface ProjectsDataStore {
 
     fun clearProjects(): Completable
 
-    fun getBookmarkedProjects(): Observable<List<ProjectEntity>>
+    fun getBookmarkedProjects(): Flowable<List<ProjectEntity>>
 
     fun setProjectAsBookmarked(projectId: String): Completable
 
