@@ -31,8 +31,10 @@ class ProjectsDataRepositoryTest {
     @Before
     fun setup() {
         stubFactoryGetDataStore()
+        stubFactoryGetCacheDataStore()
         stubIsCacheExpired(Single.just(false))
         stubAreProjectsCached(Single.just(false))
+        stubSaveProjects(Completable.complete())
     }
 
     @Test
@@ -57,7 +59,6 @@ class ProjectsDataRepositoryTest {
 
     @Test
     fun getBookmarkedProjectsCompletes() {
-        stubFactoryGetCacheDataStore()
         stubGetBookmarkedProjects(Observable.just(listOf(ProjectFactory.makeProjectEntity())))
         stubMapper(ProjectFactory.makeProject(), any())
 
@@ -67,7 +68,6 @@ class ProjectsDataRepositoryTest {
 
     @Test
     fun getBookmarkedProjectsReturnsData() {
-        stubFactoryGetCacheDataStore()
         val projectEntity = ProjectFactory.makeProjectEntity()
         val project = ProjectFactory.makeProject()
         stubGetBookmarkedProjects(Observable.just(listOf(projectEntity)))
@@ -79,7 +79,6 @@ class ProjectsDataRepositoryTest {
 
     @Test
     fun bookmarkProjectCompletes() {
-        stubFactoryGetCacheDataStore()
         stubBookmarkProject(Completable.complete())
 
         val testObserver = repository.bookmarkProject(DataFactory.randomString()).test()
@@ -88,11 +87,20 @@ class ProjectsDataRepositoryTest {
 
     @Test
     fun unbookmarkProjectCompletes() {
-        stubFactoryGetCacheDataStore()
-        stubUnbookmarkProject(Completable.complete())
+        stubUnBookmarkProject(Completable.complete())
 
         val testObserver = repository.unbookmarkProject(DataFactory.randomString()).test()
         testObserver.assertComplete()
+    }
+
+    private fun stubBookmarkProject(completable: Completable) {
+        whenever(cache.setProjectAsBookmarked(any()))
+                .thenReturn(completable)
+    }
+
+    private fun stubUnBookmarkProject(completable: Completable) {
+        whenever(cache.setProjectAsNotBookmarked(any()))
+                .thenReturn(completable)
     }
 
     private fun stubIsCacheExpired(single: Single<Boolean>) {
@@ -115,16 +123,6 @@ class ProjectsDataRepositoryTest {
                 .thenReturn(observable)
     }
 
-    private fun stubBookmarkProject(completable: Completable) {
-        whenever(store.setProjectAsBookmarked(any()))
-                .thenReturn(completable)
-    }
-
-    private fun stubUnbookmarkProject(completable: Completable) {
-        whenever(store.setProjectAsNotBookmarked(any()))
-                .thenReturn(completable)
-    }
-
     private fun stubGetBookmarkedProjects(observable: Observable<List<ProjectEntity>>) {
         whenever(store.getBookmarkedProjects())
                 .thenReturn(observable)
@@ -139,4 +137,10 @@ class ProjectsDataRepositoryTest {
         whenever(factory.getCacheDataStore())
                 .thenReturn(store)
     }
+
+    private fun stubSaveProjects(completable: Completable) {
+        whenever(store.saveProjects(any()))
+                .thenReturn(completable)
+    }
+
 }
