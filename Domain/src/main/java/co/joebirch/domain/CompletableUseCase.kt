@@ -1,24 +1,24 @@
-package co.joebirch.domain.interactor
+package co.joebirch.domain
 
 import co.joebirch.domain.executor.PostExecutionThread
-import io.reactivex.Observable
+import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 
-abstract class ObservableUseCase<T, in Params> constructor(
+abstract class CompletableUseCase<in Params> constructor(
         private val postExecutionThread: PostExecutionThread) {
 
     private val disposables = CompositeDisposable()
 
-    protected abstract fun buildUseCaseObservable(params: Params? = null): Observable<T>
+    protected abstract fun buildUseCaseCompletable(params: Params? = null): Completable
 
-    open fun execute(singleObserver: DisposableObserver<T>, params: Params? = null) {
-        val single = this.buildUseCaseObservable(params)
+    open fun execute(observer: DisposableCompletableObserver, params: Params? = null) {
+        val completable = this.buildUseCaseCompletable(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(postExecutionThread.scheduler)
-        addDisposable(single.subscribeWith(singleObserver))
+        addDisposable(completable.subscribeWith(observer))
     }
 
     fun addDisposable(disposable: Disposable) {

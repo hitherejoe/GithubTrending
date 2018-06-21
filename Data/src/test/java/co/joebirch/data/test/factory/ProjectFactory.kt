@@ -17,7 +17,8 @@ object ProjectFactory {
         return Project(DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
-                DataFactory.randomString(), DataFactory.randomString())
+                DataFactory.randomString(), DataFactory.randomString(),
+                DataFactory.randomBoolean())
     }
 
 }
