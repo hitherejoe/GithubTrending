@@ -1,22 +1,16 @@
-package co.joebirch.domain.interactor.bookmarked
+package co.joebirch.domain.interactor.bookmark
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.bookmark.GetBookmarkedProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.domain.test.ProjectDataFactory
-import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
-import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class GetBookmarkedProjectsTest {
 
     private lateinit var getBookmarkedProjects: GetBookmarkedProjects
@@ -31,25 +25,22 @@ class GetBookmarkedProjectsTest {
 
     @Test
     fun getBookmarkedProjectsCompletes() {
-        stubProjectsRepositoryGetBookmarkedProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
-
+        stubGetProjects(Observable.just(ProjectDataFactory.makeProjectList(2)))
         val testObserver = getBookmarkedProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
     @Test
-    fun getBookmarkProjectsCallsRepository() {
-        stubProjectsRepositoryGetBookmarkedProjects(
-                Single.just(ProjectDataFactory.makeProjectList(2)))
-
-        getBookmarkedProjects.buildUseCaseObservable().test()
-        verify(projectsRepository).getBookmarkedProjects()
+    fun getBookmarkedProjectsReturnsData() {
+        val projects = ProjectDataFactory.makeProjectList(2)
+        stubGetProjects(Observable.just(projects))
+        val testObserver = getBookmarkedProjects.buildUseCaseObservable().test()
+        testObserver.assertValue(projects)
     }
 
-    private fun stubProjectsRepositoryGetBookmarkedProjects(single: Observable<List<Project>>) {
+    private fun stubGetProjects(observable: Observable<List<Project>>) {
         whenever(projectsRepository.getBookmarkedProjects())
-                .thenReturn(single)
+                .thenReturn(observable)
     }
 
 }
