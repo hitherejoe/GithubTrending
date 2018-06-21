@@ -12,8 +12,9 @@ open class ProjectMapper @Inject constructor() : EntityMapper<ProjectEntity, Pro
     }
 
     override fun mapToEntity(domain: Project): ProjectEntity {
-        return ProjectEntity(domain.id, domain.name, domain.fullName, domain.starCount,
-                domain.dateCreated, domain.ownerName, domain.ownerAvatar, domain.isBookmarked)
+        return ProjectEntity(domain.id, domain.name, domain.fullName,
+                domain.starCount, domain.dateCreated, domain.ownerName,
+                domain.ownerAvatar, domain.isBookmarked)
     }
 
 }

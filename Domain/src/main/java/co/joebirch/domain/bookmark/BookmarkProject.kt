@@ -1,7 +1,7 @@
 package co.joebirch.domain.interactor.bookmark
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.CompletableUseCase
+import co.joebirch.domain.CompletableUseCase
 import co.joebirch.domain.repository.ProjectsRepository
 import io.reactivex.Completable
 import javax.inject.Inject
@@ -11,7 +11,7 @@ open class BookmarkProject @Inject constructor(
         postExecutionThread: PostExecutionThread)
     : CompletableUseCase<BookmarkProject.Params>(postExecutionThread) {
 
-    override fun buildUseCaseCompletable(params: Params?): Completable {
+    public override fun buildUseCaseCompletable(params: Params?): Completable {
         if (params == null) throw IllegalArgumentException("Params can't be null!")
         return projectsRepository.bookmarkProject(params.projectId)
     }

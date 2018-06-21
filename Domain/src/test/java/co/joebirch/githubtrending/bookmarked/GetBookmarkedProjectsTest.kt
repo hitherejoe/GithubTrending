@@ -1,17 +1,13 @@
-package co.joebirch.domain.interactor.bookmarked
+package co.joebirch.githubtrending.bookmarked
 
 import co.joebirch.domain.executor.PostExecutionThread
 import co.joebirch.domain.interactor.bookmark.GetBookmarkedProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
-import co.joebirch.domain.test.ProjectDataFactory
+import co.joebirch.githubtrending.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
-<<<<<<< HEAD
-=======
-import io.reactivex.Single
->>>>>>> task/cache
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

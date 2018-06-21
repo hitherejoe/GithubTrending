@@ -31,7 +31,7 @@ class ProjectsCacheImpl @Inject constructor(
     }
 
     override fun getProjects(): Observable<List<ProjectEntity>> {
-        return projectsDatabase.cachedProjectsDao().getBookmarkedProjects()
+        return projectsDatabase.cachedProjectsDao().getProjects()
                 .toObservable()
                 .map {
                     it.map { mapper.mapFromCached(it) }

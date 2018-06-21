@@ -1,4 +1,6 @@
-package co.joebirch.domain.test
+package co.joebirch.githubtrending.test
+
+import co.joebirch.domain.model.Project
 
 import co.joebirch.domain.model.Project
 

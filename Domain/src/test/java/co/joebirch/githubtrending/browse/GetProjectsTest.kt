@@ -1,17 +1,21 @@
-package co.joebirch.domain.interactor.browse
+package co.joebirch.githubtrending.browse
 
 import co.joebirch.domain.executor.PostExecutionThread
+import co.joebirch.domain.interactor.browse.GetProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
-import co.joebirch.domain.test.ProjectDataFactory
+import co.joebirch.githubtrending.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
 
+@RunWith(MockitoJUnitRunner::class)
 class GetProjectsTest {
 
     private lateinit var getProjects: GetProjects
