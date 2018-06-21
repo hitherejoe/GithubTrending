@@ -10,7 +10,6 @@ import co.joebirch.data.test.factory.ProjectFactory
 import co.joebirch.domain.model.Project
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -31,151 +30,117 @@ class ProjectsDataRepositoryTest {
 
     @Before
     fun setup() {
-        stubProjectsDataStoreFactoryGetDataStore()
+        stubFactoryGetDataStore()
+        stubFactoryGetCacheDataStore()
+        stubIsCacheExpired(Single.just(false))
+        stubAreProjectsCached(Single.just(false))
+        stubSaveProjects(Completable.complete())
     }
 
     @Test
     fun getProjectsCompletes() {
-        stubProjectsDataStoreGetProjects(Observable.just(listOf(
-                ProjectFactory.makeProjectEntity())))
-        stubProjectMapperMapFromEntity(any(), ProjectFactory.makeProject())
+        stubGetProjects(Observable.just(listOf(ProjectFactory.makeProjectEntity())))
+        stubMapper(ProjectFactory.makeProject(), any())
 
         val testObserver = repository.getProjects().test()
         testObserver.assertComplete()
     }
 
     @Test
-    fun getProjectsCallsDataStore() {
-        stubProjectsDataStoreGetProjects(Observable.just(listOf(
-                ProjectFactory.makeProjectEntity())))
-        stubProjectMapperMapFromEntity(any(), ProjectFactory.makeProject())
+    fun getProjectsReturnsData() {
+        val projectEntity = ProjectFactory.makeProjectEntity()
+        val project = ProjectFactory.makeProject()
+        stubGetProjects(Observable.just(listOf(projectEntity)))
+        stubMapper(project, projectEntity)
 
-        repository.getProjects().test()
-        verify(store).getProjects()
+        val testObserver = repository.getProjects().test()
+        testObserver.assertValue(listOf(project))
     }
 
     @Test
-    fun getProjectsReturnsData() {
-        val response = listOf(ProjectFactory.makeProjectEntity())
-        val data = listOf(ProjectFactory.makeProject())
-        stubProjectsDataStoreGetProjects(Observable.just(response))
-        stubProjectMapperMapFromEntity(response[0], data[0])
+    fun getBookmarkedProjectsCompletes() {
+        stubGetBookmarkedProjects(Observable.just(listOf(ProjectFactory.makeProjectEntity())))
+        stubMapper(ProjectFactory.makeProject(), any())
 
-        val testObserver = repository.getProjects().test()
-        testObserver.assertValue(data)
+        val testObserver = repository.getBookmarkedProjects().test()
+        testObserver.assertComplete()
+    }
+
+    @Test
+    fun getBookmarkedProjectsReturnsData() {
+        val projectEntity = ProjectFactory.makeProjectEntity()
+        val project = ProjectFactory.makeProject()
+        stubGetBookmarkedProjects(Observable.just(listOf(projectEntity)))
+        stubMapper(project, projectEntity)
+
+        val testObserver = repository.getBookmarkedProjects().test()
+        testObserver.assertValue(listOf(project))
     }
 
     @Test
     fun bookmarkProjectCompletes() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        stubProjectsDataStoreBookmarkProject(Completable.complete())
+        stubBookmarkProject(Completable.complete())
+
         val testObserver = repository.bookmarkProject(DataFactory.randomString()).test()
         testObserver.assertComplete()
     }
 
     @Test
-    fun bookmarkProjectCallsDataStore() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        val projectId = DataFactory.randomString()
-        stubProjectsDataStoreBookmarkProject(Completable.complete())
-        repository.bookmarkProject(projectId).test()
-        verify(store).setProjectAsBookmarked(projectId)
-    }
-
-    @Test
     fun unbookmarkProjectCompletes() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        stubProjectsDataStoreUnBookmarkProject(Completable.complete())
+        stubUnBookmarkProject(Completable.complete())
+
         val testObserver = repository.unbookmarkProject(DataFactory.randomString()).test()
         testObserver.assertComplete()
     }
 
-    @Test
-    fun unbookmarkProjectCallsDataStore() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        val projectId = DataFactory.randomString()
-        stubProjectsDataStoreUnBookmarkProject(Completable.complete())
-        repository.unbookmarkProject(projectId).test()
-        verify(store).setProjectAsNotBookmarked(projectId)
+    private fun stubBookmarkProject(completable: Completable) {
+        whenever(cache.setProjectAsBookmarked(any()))
+                .thenReturn(completable)
     }
 
-    @Test
-    fun getBookmarkedProjectsCompletes() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        stubProjectsDataStoreGetBookmarkedProjects(Observable.just(listOf(
-                ProjectFactory.makeProjectEntity())))
-        stubProjectMapperMapFromEntity(any(), ProjectFactory.makeProject())
-
-        val testObserver = repository.getBookmarkedProjects().test()
-        testObserver.assertComplete()
+    private fun stubUnBookmarkProject(completable: Completable) {
+        whenever(cache.setProjectAsNotBookmarked(any()))
+                .thenReturn(completable)
     }
 
-    @Test
-    fun getBookmarkedProjectsCallsDataStore() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        stubProjectsDataStoreGetBookmarkedProjects(Observable.just(listOf(
-                ProjectFactory.makeProjectEntity())))
-        stubProjectMapperMapFromEntity(any(), ProjectFactory.makeProject())
-
-        repository.getBookmarkedProjects().test()
-        verify(store).getBookmarkedProjects()
-    }
-
-    @Test
-    fun getBookmarkedProjectsReturnsData() {
-        stubProjectsDataStoreFactoryGetCacheDataStore()
-        val response = listOf(ProjectFactory.makeProjectEntity())
-        val data = listOf(ProjectFactory.makeProject())
-        stubProjectsDataStoreGetBookmarkedProjects(Observable.just(response))
-        stubProjectMapperMapFromEntity(response[0], data[0])
-
-        val testObserver = repository.getBookmarkedProjects().test()
-        testObserver.assertValue(data)
-    }
-
-    private fun stubProjectsCacheAreProjectsCached(single: Single<Boolean>) {
-        whenever(cache.areProjectsCached())
-                .thenReturn(single)
-    }
-
-    private fun stubProjectsCacheIsProjectsCacheExpired(single: Single<Boolean>) {
+    private fun stubIsCacheExpired(single: Single<Boolean>) {
         whenever(cache.isProjectsCacheExpired())
                 .thenReturn(single)
     }
 
-    private fun stubProjectsDataStoreFactoryGetDataStore() {
-        whenever(factory.getDataStore(any(), any()))
-                .thenReturn(store)
+    private fun stubAreProjectsCached(single: Single<Boolean>) {
+        whenever(cache.areProjectsCached())
+                .thenReturn(single)
     }
 
-    private fun stubProjectsDataStoreFactoryGetCacheDataStore() {
-        whenever(factory.getCacheDataStore())
-                .thenReturn(store)
+    private fun stubMapper(model: Project, entity: ProjectEntity) {
+        whenever(mapper.mapFromEntity(entity))
+                .thenReturn(model)
     }
 
-    private fun stubProjectsDataStoreGetProjects(observable: Observable<List<ProjectEntity>>) {
+    private fun stubGetProjects(observable: Observable<List<ProjectEntity>>) {
         whenever(store.getProjects())
                 .thenReturn(observable)
     }
 
-    private fun stubProjectsDataStoreGetBookmarkedProjects(observable: Observable<List<ProjectEntity>>) {
+    private fun stubGetBookmarkedProjects(observable: Observable<List<ProjectEntity>>) {
         whenever(store.getBookmarkedProjects())
                 .thenReturn(observable)
     }
 
-    private fun stubProjectsDataStoreBookmarkProject(completable: Completable) {
-        whenever(store.setProjectAsBookmarked(any()))
+    private fun stubFactoryGetDataStore() {
+        whenever(factory.getDataStore(any(), any()))
+                .thenReturn(store)
+    }
+
+    private fun stubFactoryGetCacheDataStore() {
+        whenever(factory.getCacheDataStore())
+                .thenReturn(store)
+    }
+
+    private fun stubSaveProjects(completable: Completable) {
+        whenever(store.saveProjects(any()))
                 .thenReturn(completable)
     }
 
-    private fun stubProjectsDataStoreUnBookmarkProject(completable: Completable) {
-        whenever(store.setProjectAsNotBookmarked(any()))
-                .thenReturn(completable)
-    }
-
-    private fun stubProjectMapperMapFromEntity(entity: ProjectEntity,
-                                               model: Project) {
-        whenever(mapper.mapFromEntity(entity))
-                .thenReturn(model)
-    }
 }

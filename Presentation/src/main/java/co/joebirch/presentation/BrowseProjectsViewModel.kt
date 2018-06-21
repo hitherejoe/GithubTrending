@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import co.joebirch.domain.interactor.bookmark.BookmarkProject
+import co.joebirch.domain.interactor.bookmark.UnbookmarkProject
 import co.joebirch.domain.interactor.browse.GetProjects
-import co.joebirch.domain.interactor.browse.UnBookmarkProject
 import co.joebirch.domain.model.Project
 import co.joebirch.presentation.mapper.ProjectViewMapper
 import co.joebirch.presentation.model.ProjectView
@@ -15,10 +15,10 @@ import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableObserver
 import javax.inject.Inject
 
-class BrowseProjectsViewModel @Inject constructor(
-        private val getProjects: GetProjects,
+open class BrowseProjectsViewModel @Inject internal constructor(
+        private val getProjects: GetProjects?,
         private val bookmarkProject: BookmarkProject,
-        private val unBookmarkProject: UnBookmarkProject,
+        private val unBookmarkProject: UnbookmarkProject,
         private val mapper: ProjectViewMapper): ViewModel() {
 
     private val liveData: MutableLiveData<Resource<List<ProjectView>>> = MutableLiveData()
@@ -28,7 +28,7 @@ class BrowseProjectsViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        getProjects.dispose()
+        getProjects?.dispose()
         super.onCleared()
     }
 
@@ -38,7 +38,7 @@ class BrowseProjectsViewModel @Inject constructor(
 
     fun fetchProjects() {
         liveData.postValue(Resource(ResourceState.LOADING, null, null))
-        return getProjects.execute(ProjectsSubscriber())
+        getProjects?.execute(ProjectsSubscriber())
     }
 
     fun bookmarkProject(projectId: String) {
@@ -50,7 +50,7 @@ class BrowseProjectsViewModel @Inject constructor(
     fun unbookmarkProject(projectId: String) {
         liveData.postValue(Resource(ResourceState.LOADING, null, null))
         return unBookmarkProject.execute(BookmarkProjectsSubscriber(),
-                UnBookmarkProject.Params.forProject(projectId))
+                UnbookmarkProject.Params.forProject(projectId))
     }
 
     inner class ProjectsSubscriber: DisposableObserver<List<Project>>() {

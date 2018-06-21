@@ -4,7 +4,7 @@ import co.joebirch.domain.model.Project
 import co.joebirch.presentation.model.ProjectView
 import javax.inject.Inject
 
-class ProjectViewMapper @Inject constructor(): Mapper<ProjectView, Project> {
+open class ProjectViewMapper @Inject constructor() : Mapper<ProjectView, Project> {
 
     override fun mapToView(type: Project): ProjectView {
         return ProjectView(type.id, type.name, type.fullName,

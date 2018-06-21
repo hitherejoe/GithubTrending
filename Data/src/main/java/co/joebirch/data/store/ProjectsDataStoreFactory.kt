@@ -1,6 +1,5 @@
 package co.joebirch.data.store
 
-import co.joebirch.data.repository.ProjectsCache
 import co.joebirch.data.repository.ProjectsDataStore
 import javax.inject.Inject
 
@@ -9,7 +8,7 @@ open class ProjectsDataStoreFactory @Inject constructor(
         private val projectsRemoteDataStore: ProjectsRemoteDataStore) {
 
     open fun getDataStore(projectsCached: Boolean,
-                     cacheExpired: Boolean): ProjectsDataStore {
+                          cacheExpired: Boolean): ProjectsDataStore {
         return if (projectsCached && !cacheExpired) {
             projectsCacheDataStore
         } else {

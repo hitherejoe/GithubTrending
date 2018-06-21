@@ -5,7 +5,7 @@ ext {
     androidMinSdkVersion = 21
     androidTargetSdkVersion = 26
     androidCompileSdkVersion = 26
-    kotlinVersion = '1.2.30'
+    kotlinVersion = '1.2.10'
 
     //Libraries
     supportLibraryVersion = '26.1.0'
@@ -20,12 +20,13 @@ ext {
     gsonVersion = '2.8.1'
     okHttpVersion = '3.8.1'
     retrofitVersion = '2.3.0'
-    archCompVersion = '1.0.0'
     supportLibraryVersion = '26.1.0'
     timberVersion = '4.5.1'
     glideVersion = '4.0.0'
     daggerVersion = '2.11'
     glassfishAnnotationVersion = '10.0-b28'
+    archCompVersion = '1.1.1'
+    roomVersion = '1.0.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -76,17 +77,18 @@ ext {
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
             androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}",
-            roomRuntime:        "android.arch.persistence.room:runtime:${archCompVersion}",
-            roomCompiler:       "android.arch.persistence.room:compiler:${archCompVersion}",
-            roomRxJava:         "android.arch.persistence.room:rxjava2:${archCompVersion}"
+            roomRuntime:        "android.arch.persistence.room:runtime:${roomVersion}",
+            roomCompiler:       "android.arch.persistence.room:compiler:${roomVersion}",
+            roomRxJava:         "android.arch.persistence.room:rxjava2:${roomVersion}"
     ]
 
     cacheTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            roomTesting:        "android.arch.persistence.room:testing:${archCompVersion}",
+            roomTesting:        "android.arch.persistence.room:testing:${roomVersion}",
             archTesting:        "android.arch.core:core-testing:${archCompVersion}",
             supportRunner:      "com.android.support.test:runner:${androidSupportRunnerVersion}",
             supportRules:       "com.android.support.test:rules:${androidSupportRulesVersion}"
@@ -132,7 +134,8 @@ ext {
             kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
+            archTesting:        "android.arch.core:core-testing:${archCompVersion}",
     ]
 
     mobileUiDependencies = [

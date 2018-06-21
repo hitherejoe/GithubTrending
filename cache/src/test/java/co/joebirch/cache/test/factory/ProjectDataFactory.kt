@@ -10,7 +10,15 @@ object ProjectDataFactory {
                 DataFactory.randomUuid(), DataFactory.randomUuid(),
                 DataFactory.randomUuid(), DataFactory.randomUuid(),
                 DataFactory.randomUuid(), DataFactory.randomUuid(),
-                DataFactory.randomBoolean())
+                false)
+    }
+
+    fun makeBookmarkedCachedProject(): CachedProject {
+        return CachedProject(DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                true)
     }
 
     fun makeProjectEntity(): ProjectEntity {
@@ -21,4 +29,11 @@ object ProjectDataFactory {
                 DataFactory.randomBoolean())
     }
 
+    fun makeBookmarkedProjectEntity(): ProjectEntity {
+        return ProjectEntity(DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                DataFactory.randomUuid(), DataFactory.randomUuid(),
+                true)
+    }
 }

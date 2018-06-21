@@ -1,12 +1,12 @@
-package co.joebirch.data.test.factory
+package co.joebirch.presentation.test.factory
 
-import co.joebirch.data.model.ProjectEntity
 import co.joebirch.domain.model.Project
+import co.joebirch.presentation.model.ProjectView
 
 object ProjectFactory {
 
-    fun makeProjectEntity(): ProjectEntity {
-        return ProjectEntity(DataFactory.randomString(),
+    fun makeProjectView(): ProjectView {
+        return ProjectView(DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
                 DataFactory.randomString(), DataFactory.randomString(),
@@ -21,4 +21,19 @@ object ProjectFactory {
                 DataFactory.randomBoolean())
     }
 
+    fun makeProjectViewList(count: Int): List<ProjectView> {
+        val projects = mutableListOf<ProjectView>()
+        repeat(count) {
+            projects.add(makeProjectView())
+        }
+        return projects
+    }
+
+    fun makeProjectList(count: Int): List<Project> {
+        val projects = mutableListOf<Project>()
+        repeat(count) {
+            projects.add(makeProject())
+        }
+        return projects
+    }
 }

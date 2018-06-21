@@ -1,4 +1,8 @@
-package co.joebirch.domain.test
+package co.joebirch.githubtrending.test
+
+import co.joebirch.domain.model.Project
+
+import co.joebirch.domain.model.Project
 
 object ProjectDataFactory {
 
@@ -8,7 +12,7 @@ object ProjectDataFactory {
 
     fun makeProject(): Project {
         return Project(randomUuid(), randomUuid(), randomUuid(), randomUuid(),
-                randomUuid(), randomUuid(), randomUuid())
+                randomUuid(), randomUuid(), randomUuid(), false)
     }
 
     fun makeProjectList(count: Int) : List<Project> {
