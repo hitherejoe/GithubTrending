@@ -42,13 +42,11 @@ open class BrowseProjectsViewModel @Inject internal constructor(
     }
 
     fun bookmarkProject(projectId: String) {
-        liveData.postValue(Resource(ResourceState.LOADING, null, null))
         return bookmarkProject.execute(BookmarkProjectsSubscriber(),
                 BookmarkProject.Params.forProject(projectId))
     }
 
     fun unbookmarkProject(projectId: String) {
-        liveData.postValue(Resource(ResourceState.LOADING, null, null))
         return unBookmarkProject.execute(BookmarkProjectsSubscriber(),
                 UnbookmarkProject.Params.forProject(projectId))
     }
