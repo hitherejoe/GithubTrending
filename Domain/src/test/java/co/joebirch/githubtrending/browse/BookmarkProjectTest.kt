@@ -1,7 +1,7 @@
 package co.joebirch.githubtrending.browse
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.browse.BookmarkProject
+import co.joebirch.domain.interactor.bookmark.BookmarkProject
 import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.githubtrending.test.ProjectDataFactory
 import com.nhaarman.mockito_kotlin.any

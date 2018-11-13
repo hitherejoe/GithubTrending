@@ -94,12 +94,12 @@ class ProjectsDataRepositoryTest {
     }
 
     private fun stubBookmarkProject(completable: Completable) {
-        whenever(cache.setProjectAsBookmarked(any()))
+        whenever(store.setProjectAsBookmarked(any()))
                 .thenReturn(completable)
     }
 
     private fun stubUnBookmarkProject(completable: Completable) {
-        whenever(cache.setProjectAsNotBookmarked(any()))
+        whenever(store.setProjectAsNotBookmarked(any()))
                 .thenReturn(completable)
     }
 

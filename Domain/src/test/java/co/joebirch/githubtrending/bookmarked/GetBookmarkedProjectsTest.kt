@@ -1,7 +1,7 @@
 package co.joebirch.githubtrending.bookmarked
 
 import co.joebirch.domain.executor.PostExecutionThread
-import co.joebirch.domain.interactor.bookmarked.GetBookmarkedProjects
+import co.joebirch.domain.interactor.bookmark.GetBookmarkedProjects
 import co.joebirch.domain.model.Project
 import co.joebirch.domain.repository.ProjectsRepository
 import co.joebirch.githubtrending.test.ProjectDataFactory
@@ -33,7 +33,7 @@ class GetBookmarkedProjectsTest {
         stubProjectsRepositoryGetBookmarkedProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
 
-        val testObserver = getBookmarkedProjects.buildUseCaseSingle().test()
+        val testObserver = getBookmarkedProjects.buildUseCaseObservable().test()
         testObserver.assertComplete()
     }
 
@@ -42,7 +42,7 @@ class GetBookmarkedProjectsTest {
         stubProjectsRepositoryGetBookmarkedProjects(
                 Observable.just(ProjectDataFactory.makeProjectList(2)))
 
-        getBookmarkedProjects.buildUseCaseSingle().test()
+        getBookmarkedProjects.buildUseCaseObservable().test()
         verify(projectsRepository).getBookmarkedProjects()
     }
 

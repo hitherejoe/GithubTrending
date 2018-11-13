@@ -8,9 +8,13 @@ object ProjectDataFactory {
         return java.util.UUID.randomUUID().toString()
     }
 
+    fun randomBoolean(): Boolean {
+        return Math.random() < 0.5
+    }
+
     fun makeProject(): Project {
         return Project(randomUuid(), randomUuid(), randomUuid(), randomUuid(),
-                randomUuid(), randomUuid(), randomUuid())
+                randomUuid(), randomUuid(), randomUuid(), randomBoolean())
     }
 
     fun makeProjectList(count: Int) : List<Project> {
