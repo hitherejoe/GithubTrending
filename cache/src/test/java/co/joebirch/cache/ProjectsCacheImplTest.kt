@@ -93,7 +93,7 @@ class ProjectsCacheImplTest {
 
     @Test
     fun isProjectsCacheExpiredReturnsNotExpired() {
-        cache.setLastCacheTime(1000L).test()
+        cache.setLastCacheTime(System.currentTimeMillis() - 1000).test()
         val testObserver = cache.isProjectsCacheExpired().test()
         testObserver.assertValue(false)
     }
