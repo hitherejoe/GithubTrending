@@ -72,7 +72,7 @@ class ProjectsCacheImpl @Inject constructor(
         }
     }
 
-    override fun isProjectsCacheExpired(): Single<Boolean> {
+    override fun isProjectsCacheExpired(): Flowable<Boolean> {
         val currentTime = System.currentTimeMillis()
         val expirationTime = (60 * 10 * 1000).toLong()
         return projectsDatabase.configDao().getConfig()
